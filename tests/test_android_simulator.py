@@ -57,8 +57,8 @@ def test_mobile_simulator_surface_is_local_and_directly_connected_to_rc():
     assert 'SimulatorActivity.class' in main
 
     gradle = (ANDROID / 'build.gradle.kts').read_text(encoding='utf-8')
-    assert 'versionCode = 29' in gradle
-    assert 'versionName = "3.3.3"' in gradle
+    assert 'versionCode = 30' in gradle
+    assert 'versionName = "6.0.0"' in gradle
     assert 'assets.srcDirs("assets")' in gradle
     assert 'syncFpvSimAssets' in gradle
     assert 'preBuild' in gradle

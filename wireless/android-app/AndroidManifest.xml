@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.drone.rcn1cbridge"
-    android:versionCode="29"
-    android:versionName="3.3.3">
+    android:versionCode="30"
+    android:versionName="6.0.0">
 
     <uses-feature android:name="android.hardware.usb.host" android:required="false"/>
 
