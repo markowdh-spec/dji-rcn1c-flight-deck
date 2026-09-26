@@ -1,6 +1,7 @@
 name: Android release
 
 on:
+  workflow_dispatch:
   push:
     tags:
       - 'v*'
@@ -29,35 +30,23 @@ jobs:
         with:
           gradle-version: '8.7'
 
-      - name: Restore stable Android signing key
+      - name: Prepare local debug signing key
         shell: bash
-        env:
-          KEYSTORE_B64: ${{ secrets.RCN1C_ANDROID_DEBUG_KEYSTORE_B64 }}
         run: |
-          test -n "$KEYSTORE_B64" || { echo "Missing RCN1C_ANDROID_DEBUG_KEYSTORE_B64"; exit 1; }
           mkdir -p "$HOME/.android"
-          printf '%s' "$KEYSTORE_B64" | base64 --decode > "$HOME/.android/debug.keystore"
-          chmod 600 "$HOME/.android/debug.keystore"
-          keytool -list -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey \
-            | tr -d ':' | tr '[:upper:]' '[:lower:]' \
-            | grep -q '7ff5f60b8917bd6c265a38ab6581a027ca4d571e2a5d4bf7d3e7becd04d131a7' \
-            || { echo 'Configured keystore certificate does not match the stable APK signer'; exit 1; }
+          keytool -genkeypair -v -keystore "$HOME/.android/debug.keystore" -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=RCN1C Soft Controls,O=Marko Test,C=DE"
 
-      - name: Build and verify Flight Bridge APK
+      - name: Build Flight Bridge APK
         shell: bash
         run: |
           cd wireless/android-app
           gradle --no-daemon clean assembleRelease
           cp build/outputs/apk/release/*.apk ../RCN1C_Bridge.apk
           APKSIGNER="$ANDROID_HOME/build-tools/34.0.0/apksigner"
-          "$APKSIGNER" verify --verbose --print-certs ../RCN1C_Bridge.apk | tee /tmp/signing.txt
-          grep -q 'Verified using v2 scheme (APK Signature Scheme v2): true' /tmp/signing.txt
-          grep -qi '7ff5f60b8917bd6c265a38ab6581a027ca4d571e2a5d4bf7d3e7becd04d131a7' /tmp/signing.txt
+          "$APKSIGNER" verify --verbose --print-certs ../RCN1C_Bridge.apk
 
-      - name: Publish GitHub release
-        uses: softprops/action-gh-release@v2
+      - name: Upload test APK
+        uses: actions/upload-artifact@v4
         with:
-          files: wireless/RCN1C_Bridge.apk
-          prerelease: ${{ contains(github.ref_name, '-beta') }}
-          make_latest: true
-          generate_release_notes: true
+          name: RCN1C-Soft-Controls-APK
+          path: wireless/RCN1C_Bridge.apk
