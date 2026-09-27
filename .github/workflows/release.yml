@@ -1,4 +1,4 @@
-name: Android release
+name: Flight Zone APK
 
 on:
   workflow_dispatch:
@@ -48,5 +48,5 @@ jobs:
       - name: Upload test APK
         uses: actions/upload-artifact@v4
         with:
-          name: RCN1C-Soft-Controls-APK
+          name: RCN1C-Flight-Zone-V0
           path: wireless/RCN1C_Bridge.apk
