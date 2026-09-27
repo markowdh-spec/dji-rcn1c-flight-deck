@@ -31,7 +31,7 @@ import java.util.Locale;
 
 public final class SimulatorActivity extends Activity implements Rcn1cUsbReader.Listener {
     private static final String ACTION_USB_PERMISSION = "com.drone.rcn1cbridge.SIMULATOR_USB_PERMISSION";
-    private static final String LOCAL_ASSET_BASE = "https://appassets.androidplatform.net/assets/fpv-sim/";
+    private static final String LOCAL_ASSET_BASE = "https://appassets.androidplatform.net/assets/flight-zone/";
     private static final String LOCAL_ASSET_HOST = "appassets.androidplatform.net";
     private static final long RETRY_MS = 1200L;
     private static final long FRAME_PUSH_MS = 33L;
@@ -164,7 +164,7 @@ public final class SimulatorActivity extends Activity implements Rcn1cUsbReader.
         });
         webView.loadDataWithBaseURL(
                 LOCAL_ASSET_BASE + "index.html",
-                readAssetText("fpv-sim/index.html"),
+                readAssetText("flight-zone/index.html"),
                 "text/html",
                 "UTF-8",
                 null);
@@ -294,7 +294,7 @@ public final class SimulatorActivity extends Activity implements Rcn1cUsbReader.
         if (uri == null || !"https".equals(uri.getScheme())
                 || !LOCAL_ASSET_HOST.equals(uri.getHost())) return false;
         String path = uri.getPath();
-        return path != null && path.startsWith("/assets/fpv-sim/") && !path.contains("..");
+        return path != null && path.startsWith("/assets/flight-zone/") && !path.contains("..");
     }
 
     private boolean isSimulatorDashboard(Uri uri) {
