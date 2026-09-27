@@ -294,7 +294,9 @@ public final class SimulatorActivity extends Activity implements Rcn1cUsbReader.
         if (uri == null || !"https".equals(uri.getScheme())
                 || !LOCAL_ASSET_HOST.equals(uri.getHost())) return false;
         String path = uri.getPath();
-        return path != null && path.startsWith("/assets/flight-zone/") && !path.contains("..");
+        return path != null
+                && (path.startsWith("/assets/flight-zone/") || path.startsWith("/assets/fpv-sim/"))
+                && !path.contains("..");
     }
 
     private boolean isSimulatorDashboard(Uri uri) {
