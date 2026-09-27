@@ -226,9 +226,9 @@ public final class SimulatorActivity extends Activity implements Rcn1cUsbReader.
         lastPushedPacketCount = frame.packetCount;
         frameStreamConnected = true;
         String script = String.format(Locale.US,
-                "window.setRcn1cFrame(%d,%d,%d,%d,%d,%d,%.1f,true);",
+                "window.setRcn1cFrame(%d,%d,%d,%d,%d,%d,%.1f,true,%d);",
                 frame.lx, frame.ly, frame.rx, frame.ry,
-                frame.buttonMask, frame.mode, frame.packetsPerSecond);
+                frame.buttonMask, frame.mode, frame.packetsPerSecond, frame.rawCamera);
         webView.evaluateJavascript(script, null);
     }
 
